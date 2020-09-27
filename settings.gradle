@@ -1,0 +1,8 @@
+rootProject.name = 'rmanager'
+
+include 'starter'
+include 'commons'
+include 'tbot'
+include 'admin-ui'
+include 'admin-api'
+
