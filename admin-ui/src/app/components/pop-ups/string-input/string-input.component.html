@@ -1,0 +1,12 @@
+<div class="string_input_block">
+  <div class="field">
+    <mat-form-field class="width300">
+      <input matInput type="text" placeholder="{{data}}" [(ngModel)]="str"/>
+    </mat-form-field>
+  </div>
+
+  <div class="buttons width300">
+    <button class="applyButton" color="warn" mat-raised-button (click)="closeDialogConfirm()">ОК</button>
+    <button class="applyButton" color="warn" mat-raised-button (click)="closeDialogReject()">Отмена</button>
+  </div>
+</div>

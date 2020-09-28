@@ -1,7 +1,9 @@
 package rmanager.adminapi.service;
 
 import org.springframework.stereotype.Service;
+import rmanager.adminapi.dto.ProductCategoryDTO;
 import rmanager.adminapi.dto.UserDTO;
+import rmanager.commons.entity.ProductCategory;
 import rmanager.commons.entity.User;
 import rmanager.commons.entity.other.UserRole;
 
@@ -25,6 +27,11 @@ public class ConvertServiceImpl implements ConvertService{
         user.setLogin(userDTO.getLogin());
         user.setPassword(userDTO.getPassword());
         return user;
+    }
+
+    @Override
+    public ProductCategoryDTO convertProductCategoryToDTO(ProductCategory category) {
+        return ProductCategoryDTO.builder().productCategoryId(category.getProductCategoryId()).name(category.getName()).build();
     }
 
 }

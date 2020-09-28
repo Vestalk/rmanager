@@ -29,12 +29,15 @@ import {MatSortModule} from "@angular/material/sort";
 import {OverlayModule} from "@angular/cdk/overlay";
 import { ContainerComponent } from './components/container/container.component';
 import { UsersComponent } from './components/users/users.component';
+import { ProductMenuComponent } from './components/product-menu/product-menu.component';
+import { StringInputComponent } from './components/pop-ups/string-input/string-input.component';
 
 const routes: Routes = [
   {path: "login", component: LoginComponent},
   {
     path: 'content-container', component: ContainerComponent, children: [
       {path: 'users', component: UsersComponent},
+      {path: 'product-menu', component: ProductMenuComponent},
     ]
   },
   {path: '', redirectTo: '/login', pathMatch: 'full'}
@@ -45,7 +48,9 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     ContainerComponent,
-    UsersComponent
+    UsersComponent,
+    ProductMenuComponent,
+    StringInputComponent
   ],
   imports: [
     MatDialogModule,
@@ -80,7 +85,9 @@ const routes: Routes = [
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
-  entryComponents: [],
+  entryComponents: [
+    StringInputComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

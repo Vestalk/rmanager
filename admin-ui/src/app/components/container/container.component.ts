@@ -53,4 +53,8 @@ export class ContainerComponent implements OnInit {
   routeToUsers() {
     this.router.navigateByUrl("/content-container/users");
   }
+
+  routeToProductMenu() {
+    this.router.navigateByUrl("/content-container/product-menu");
+  }
 }

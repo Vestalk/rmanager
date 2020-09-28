@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('tokenAdvMgmgt', resp.token);
           this.router.navigateByUrl("/content-container/users");
         },err => {
-          console.log(err);
           this.snackBar.open('Не правильный логин или пароль', 'OK', {
             duration: 2000,
           });
