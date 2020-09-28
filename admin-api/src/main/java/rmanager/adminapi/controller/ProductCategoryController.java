@@ -11,6 +11,9 @@ import rmanager.commons.entity.ProductCategory;
 import rmanager.commons.entity.other.UserRole;
 import rmanager.commons.service.ProductCategoryService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping(value = "/product-category")
 public class ProductCategoryController {
@@ -38,5 +41,15 @@ public class ProductCategoryController {
             return ResponseEntity.ok(categoryDTO);
         }
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping
+    @AuthRequired({UserRole.ADMIN})
+    public ResponseEntity getAllProductCategory(@RequestHeader(name = "Authentication") String token) {
+        List<ProductCategoryDTO> categoryDTOList = productCategoryService
+                .getAll().stream()
+                .map(category -> convertService.convertProductCategoryToDTO(category))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(categoryDTOList);
     }
 }

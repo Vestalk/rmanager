@@ -22,4 +22,14 @@ export class ProductCategoryService {
     });
     return this.http.post<ProductCategory>(url, categoryName, {headers});
   }
+
+  getAllProductCategory(): Observable<ProductCategory[]> {
+    let url: string = `${this.BASE_URL}/`;
+    let token = localStorage.getItem('tokenAdvMgmgt');
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authentication': `Bearer${token}`
+    });
+    return this.http.get<ProductCategory[]>(url,  {headers});
+  }
 }

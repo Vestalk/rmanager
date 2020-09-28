@@ -13,3 +13,11 @@
   margin-top: 15px;
   width: 98%;
 }
+
+.product_filters {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 15px;
+}

@@ -4,5 +4,19 @@
       <span>Добавить категорию</span>
     </button>
   </div>
-  <div class="product_list"></div>
+
+  <div class="product_filters">
+    <mat-form-field class="psa_type select_item">
+      <mat-select (selectionChange)="onChangeFilter()" [(value)]="selectCategoryId" placeholder="Выберите категорию">
+        <mat-option [value]="null" style="padding-left: 25px;"> Все </mat-option>
+        <mat-option *ngFor="let category of productCategoryList" [value]="category.productCategoryId" style="padding-left: 25px;">
+          {{category.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="product_list">
+
+  </div>
 </div>
