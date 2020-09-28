@@ -1,0 +1,39 @@
+<mat-toolbar class="app-toolbar" color="primary">
+  <div class="header_block">
+    <span>
+      <button mat-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon><span class="top-btn-txt"> Меню</span>
+      </button>
+    </span>
+
+    <div class="user_setting">
+      <span>
+        {{login}}
+      </span>
+      <button mat-raised-button color="warn" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span class="top-btn-txt"> Выйти</span>
+      </button>
+    </div>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="content_block">
+  <mat-sidenav #sidenav mode="side" opened>
+    <mat-nav-list class="nav_list">
+
+      <a (click)="routeToUsers()">
+        <mat-icon>people_outline</mat-icon>
+        <span> Пользователи </span>
+      </a>
+
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div *ngIf="contentLoaded">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+

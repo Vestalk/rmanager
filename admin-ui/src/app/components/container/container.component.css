@@ -1,0 +1,76 @@
+.app-toolbar {
+  position: sticky;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0; /* Sets the sticky toolbar to be on top */
+  z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+}
+
+.spacer-menu {
+  padding-left: 10px;
+}
+
+.content_block {
+  height: 90vh
+}
+
+.top-btn-txt {
+  font-size: 16px
+}
+
+.header_block {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user_setting {
+  max-width: 185px;
+  min-width: 185px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mat-toolbar.mat-primary {
+  background: #203736;
+  color: white;
+}
+
+.bar-status {
+  display: inherit;
+  align-items: center;
+}
+
+.bar-status > span {
+  margin-right: 20px;
+}
+
+.nav_list a {
+  min-width: 180px;
+  display: flex;
+  height: 30px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  transition: 0.15s;
+  cursor: pointer;
+  user-select: none;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.nav_list a:active {
+  background-color: rgba(102, 102, 102, 0.2);
+}
+
+.bar-right {
+  margin-left: auto;
+  display: inline-flex;
+}
+
+
+
+
