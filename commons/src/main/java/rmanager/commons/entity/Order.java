@@ -27,7 +27,7 @@ public class Order {
     @JoinColumn(name="user_id", nullable = false)
     private TelegramUser user;
 
-    @Column(name = "user_id", updatable = false, insertable = false)
+    @Column(name = "user_id", updatable = false, nullable = false, insertable = false)
     private int userId;
 
     @Enumerated(EnumType.STRING)

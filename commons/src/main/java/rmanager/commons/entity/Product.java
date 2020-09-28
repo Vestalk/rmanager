@@ -38,4 +38,11 @@ public class Product {
     @OneToMany(mappedBy="product")
     private Set<OrderItem> orderItems = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name="category_id")
+    private ProductCategory productCategory;
+
+    @Column(name = "category_id", updatable = false, nullable = false, insertable = false)
+    private int categoryId;
+
 }
