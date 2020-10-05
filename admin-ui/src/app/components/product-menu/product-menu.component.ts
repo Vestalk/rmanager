@@ -4,6 +4,9 @@ import {ProductCategoryService} from "../../service/product-category.service";
 import {StringInputComponent} from "../pop-ups/string-input/string-input.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ProductCategory} from "../../model/ProductCategory";
+import {CreateEditProductComponent} from "../pop-ups/create-edit-product/create-edit-product.component";
+import {Product} from "../../model/Product";
+import {ProductService} from "../../service/product.service";
 
 @Component({
   selector: 'app-product-menu',
@@ -17,6 +20,7 @@ export class ProductMenuComponent implements OnInit {
 
   constructor(private dialog: MatDialog,
               private snackBar: MatSnackBar,
+              private productService: ProductService,
               private productCategoryService: ProductCategoryService) { }
 
   ngOnInit() {
@@ -47,12 +51,24 @@ export class ProductMenuComponent implements OnInit {
     });
   }
 
+  createNewProduct() {
+    let product = new Product();
+    product.isAvailable = true;
+    this.dialog.open(CreateEditProductComponent, {data: product}).afterClosed().subscribe(resp => {
+      this.productService.createNewProduct(resp).subscribe(resp => {})
+    });
+  }
+
   uploadProductCategoryList() {
     this.productCategoryService.getAllProductCategory().subscribe(resp => this.productCategoryList = resp);
   }
 
   changeSelectCategory(categoryId: number) {
-    this.selectCategoryId = categoryId;
+    if (this.selectCategoryId === categoryId) {
+      this.selectCategoryId = null;
+    } else {
+      this.selectCategoryId = categoryId;
+    }
   }
 
   onChangeFilter() {

@@ -3,17 +3,31 @@
     <button (click)="createNewProductCategory()" mat-raised-button>
       <span>Добавить категорию</span>
     </button>
+
+    <button (click)="createNewProduct()" mat-raised-button>
+      <span>Добавить продукт</span>
+    </button>
   </div>
 
   <div class="product_filters">
-    <mat-form-field class="psa_type select_item">
-      <mat-select (selectionChange)="onChangeFilter()" [(value)]="selectCategoryId" placeholder="Выберите категорию">
-        <mat-option [value]="null" style="padding-left: 25px;"> Все </mat-option>
-        <mat-option *ngFor="let category of productCategoryList" [value]="category.productCategoryId" style="padding-left: 25px;">
-          {{category.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="category_list">
+      <div class="category" *ngFor="let category of productCategoryList">
+        <button (click)="changeSelectCategory(category.productCategoryId)"
+                [ngClass]="{'select': selectCategoryId === category.productCategoryId, 'not_select': selectCategoryId !== category.productCategoryId}"
+                mat-raised-button>
+          <span>{{category.name}}</span>
+        </button>
+      </div>
+    </div>
+
+<!--    <mat-form-field class="psa_type select_item">-->
+<!--      <mat-select (selectionChange)="onChangeFilter()" [(value)]="selectCategoryId" placeholder="Выберите категорию">-->
+<!--        <mat-option [value]="null" style="padding-left: 25px;"> Все </mat-option>-->
+<!--        <mat-option *ngFor="let category of productCategoryList" [value]="category.productCategoryId" style="padding-left: 25px;">-->
+<!--          {{category.name}}-->
+<!--        </mat-option>-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
   </div>
 
   <div class="product_list">

@@ -1,10 +1,10 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
 import {RouterModule, Routes} from "@angular/router";
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from './components/login/login.component';
+import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LoginComponent} from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
@@ -15,7 +15,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
 import {MatIconModule} from "@angular/material/icon";
-import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatFormFieldControl, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatSliderModule} from "@angular/material/slider";
@@ -27,10 +27,11 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSortModule} from "@angular/material/sort";
 import {OverlayModule} from "@angular/cdk/overlay";
-import { ContainerComponent } from './components/container/container.component';
-import { UsersComponent } from './components/users/users.component';
-import { ProductMenuComponent } from './components/product-menu/product-menu.component';
-import { StringInputComponent } from './components/pop-ups/string-input/string-input.component';
+import {ContainerComponent} from './components/container/container.component';
+import {UsersComponent} from './components/users/users.component';
+import {ProductMenuComponent} from './components/product-menu/product-menu.component';
+import {StringInputComponent} from './components/pop-ups/string-input/string-input.component';
+import {CreateEditProductComponent} from './components/pop-ups/create-edit-product/create-edit-product.component';
 
 const routes: Routes = [
   {path: "login", component: LoginComponent},
@@ -50,7 +51,8 @@ const routes: Routes = [
     ContainerComponent,
     UsersComponent,
     ProductMenuComponent,
-    StringInputComponent
+    StringInputComponent,
+    CreateEditProductComponent
   ],
   imports: [
     MatDialogModule,
@@ -80,14 +82,18 @@ const routes: Routes = [
     MatNativeDateModule
   ],
   exports: [
-      MatSnackBarModule,
+    MatSnackBarModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   entryComponents: [
-    StringInputComponent
+    StringInputComponent,
+    CreateEditProductComponent
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

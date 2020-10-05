@@ -32,17 +32,20 @@ public class Product {
     @Column(name = "is_available")
     private Boolean isAvailable;
 
-    @Column(name = "img_path")
-    private String imgPath;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "img_id", nullable = false, referencedColumnName = "img_id")
+    private Img img;
 
-    @OneToMany(mappedBy="product")
-    private Set<OrderItem> orderItems = new HashSet<>();
+    @Column(name = "img_id", updatable = false, insertable = false)
+    private int imgId;
 
     @ManyToOne
     @JoinColumn(name="category_id")
     private ProductCategory productCategory;
 
-    @Column(name = "category_id", updatable = false, nullable = false, insertable = false)
+    @Column(name = "category_id", updatable = false, insertable = false)
     private int categoryId;
 
+    @OneToMany(mappedBy="product")
+    private Set<OrderItem> orderItems = new HashSet<>();
 }

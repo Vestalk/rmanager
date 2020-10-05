@@ -1,0 +1,27 @@
+<div class="product_block">
+  <div class="product_data_block">
+    <div class="fields_block">
+      <mat-form-field class="width300">
+        <input matInput type="text" placeholder="Название" [(ngModel)]="product.name" />
+      </mat-form-field>
+      <mat-form-field class="width300">
+        <input matInput type="text" placeholder="Описание" [(ngModel)]="product.description" />
+      </mat-form-field>
+      <div class="cost_available">
+        <mat-form-field class="width120">
+          <input matInput type="number" placeholder="Стоимость" [(ngModel)]="product.cost" />
+        </mat-form-field>
+        <mat-checkbox [(ngModel)]="product.isAvailable" >В наличии!</mat-checkbox>
+      </div>
+      <button class="img_button" mat-raised-button type="button" (click)="imgFileInput.click()"> {{uploadButtonName}} </button>
+      <input hidden type="file" #imgFileInput (change)="onFileSelected235($event)" accept="image/*"/>
+    </div>
+    <div class="img_block">
+      <div id="offer_img"></div>
+    </div>
+  </div>
+  <div class="buttons width300">
+    <button class="applyButton" color="warn" mat-raised-button (click)="closeDialogConfirm()">ОК</button>
+    <button class="applyButton" color="warn" mat-raised-button (click)="closeDialogReject()">Отмена</button>
+  </div>
+</div>
