@@ -15,8 +15,11 @@ import {ProductService} from "../../service/product.service";
 })
 export class ProductMenuComponent implements OnInit {
 
-  selectCategoryId: number;
+  selectCategoryId: number = null;
   productCategoryList: ProductCategory[] = [];
+
+  productList: Product[] = [];
+  length: number =  10
 
   constructor(private dialog: MatDialog,
               private snackBar: MatSnackBar,
@@ -25,6 +28,7 @@ export class ProductMenuComponent implements OnInit {
 
   ngOnInit() {
     this.uploadProductCategoryList();
+    this.uploadProductList(null, null, 0, this.length);
   }
 
   createNewProductCategory() {
@@ -55,12 +59,50 @@ export class ProductMenuComponent implements OnInit {
     let product = new Product();
     product.isAvailable = true;
     this.dialog.open(CreateEditProductComponent, {data: product}).afterClosed().subscribe(resp => {
-      this.productService.createNewProduct(resp).subscribe(resp => {})
+      this.productService.createNewProduct(resp).subscribe(resp => {
+        this.snackBar.open('Добавлено!', 'OK', {
+          duration: 2000,
+        });
+        this.uploadProductList(null, this.selectCategoryId, 0, this.length);
+      }, err => {
+        this.snackBar.open('Что то пошло не так!', 'OK', {
+          duration: 2000,
+        });
+      })
     });
+  }
+
+  editProduct(item: Product) {
+    this.dialog.open(CreateEditProductComponent, {data: item}).afterClosed().subscribe(resp => {
+      this.productService.editProduct(resp).subscribe(resp => {
+        this.snackBar.open('Сохранено!', 'OK', {
+          duration: 2000,
+        });
+        this.uploadProductList(null, this.selectCategoryId, 0, this.length);
+      }, err => {
+        this.snackBar.open('Что то пошло не так!', 'OK', {
+          duration: 2000,
+        });
+      })
+    });
+  }
+
+  deleteProduct(item: Product) {
+    this.productService.archiveProduct(item.productId).subscribe(resp => {
+      this.snackBar.open('Удалено!', 'OK', {
+        duration: 2000,
+      });
+      this.uploadProductList(null, this.selectCategoryId, 0, this.length);
+    })
   }
 
   uploadProductCategoryList() {
     this.productCategoryService.getAllProductCategory().subscribe(resp => this.productCategoryList = resp);
+  }
+
+  uploadProductList(isAvailable: boolean, productCategoryId: number, page: number, pageSize: number) {
+    this.productService.countProduct(isAvailable, productCategoryId).subscribe(resp => this.length = resp);
+    this.productService.getProductPage(isAvailable, productCategoryId, page, pageSize).subscribe(resp => this.productList = resp);
   }
 
   changeSelectCategory(categoryId: number) {
@@ -69,10 +111,7 @@ export class ProductMenuComponent implements OnInit {
     } else {
       this.selectCategoryId = categoryId;
     }
-  }
-
-  onChangeFilter() {
-
+    this.uploadProductList(null, this.selectCategoryId, 0, this.length);
   }
 
 }

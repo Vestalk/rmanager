@@ -13,11 +13,19 @@
         </mat-form-field>
         <mat-checkbox [(ngModel)]="product.isAvailable" >В наличии!</mat-checkbox>
       </div>
+      <mat-form-field class="select_category">
+        <mat-select [(value)]="product.categoryId" placeholder="Выберите категорию">
+          <mat-option [value]="null" style="padding-left: 25px;"> - </mat-option>
+          <mat-option *ngFor="let category of productCategoryList" [value]="category.productCategoryId" style="padding-left: 25px;">
+            {{category.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <button class="img_button" mat-raised-button type="button" (click)="imgFileInput.click()"> {{uploadButtonName}} </button>
-      <input hidden type="file" #imgFileInput (change)="onFileSelected235($event)" accept="image/*"/>
+      <input hidden type="file" #imgFileInput (change)="onFileSelected($event)" accept="image/*"/>
     </div>
     <div class="img_block">
-      <div id="offer_img"></div>
+      <div id="product_img"></div>
     </div>
   </div>
   <div class="buttons width300">

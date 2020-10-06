@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rmanager.commons.entity.ProductCategory;
-import rmanager.commons.repository.ProductCategoryRepository;
+import rmanager.commons.repository.product.ProductCategoryRepository;
 import rmanager.commons.service.ProductCategoryService;
 
 import java.util.List;

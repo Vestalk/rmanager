@@ -1,4 +1,4 @@
-package rmanager.commons.repository;
+package rmanager.commons.repository.product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,7 +11,5 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Optional<Product> findByName(String name);
-
-    List<Product> findAllByCategoryId(Integer categoryId);
 
 }

@@ -58,7 +58,8 @@ public class ConvertServiceImpl implements ConvertService{
                 .cost(product.getCost())
                 .isAvailable(product.getIsAvailable())
                 .img(product.getImg() != null ? convertImgToDTO(product.getImg()) : null)
-                .category(product.getProductCategory() != null ? convertProductCategoryToDTO(product.getProductCategory()) : null)
+                .categoryId(product.getCategoryId() != null ? product.getProductCategory().getProductCategoryId() : null)
+                .categoryName(product.getCategoryId() != null ? product.getProductCategory().getName() : null)
                 .build();
     }
 
@@ -69,7 +70,7 @@ public class ConvertServiceImpl implements ConvertService{
         product.setName(productDTO.getName());
         product.setDescription(productDTO.getDescription());
         product.setCost(productDTO.getCost());
-        product.setIsAvailable(productDTO.getIsAvailable());
+        product.setIsAvailable(productDTO.getIsAvailable() != null ? productDTO.getIsAvailable() : false);
         return product;
     }
 

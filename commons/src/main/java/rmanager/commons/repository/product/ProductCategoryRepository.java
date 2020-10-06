@@ -1,4 +1,4 @@
-package rmanager.commons.repository;
+package rmanager.commons.repository.product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import rmanager.commons.entity.ProductCategory;

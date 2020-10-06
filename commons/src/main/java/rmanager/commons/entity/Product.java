@@ -29,22 +29,25 @@ public class Product {
     @Column(name = "cost")
     private Double cost;
 
-    @Column(name = "is_available")
+    @Column(name = "is_available", nullable = false)
     private Boolean isAvailable;
+
+    @Column(name = "is_archived", nullable = false)
+    private Boolean isArchived;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "img_id", nullable = false, referencedColumnName = "img_id")
     private Img img;
 
     @Column(name = "img_id", updatable = false, insertable = false)
-    private int imgId;
+    private Integer imgId;
 
     @ManyToOne
     @JoinColumn(name="category_id")
     private ProductCategory productCategory;
 
     @Column(name = "category_id", updatable = false, insertable = false)
-    private int categoryId;
+    private Integer categoryId;
 
     @OneToMany(mappedBy="product")
     private Set<OrderItem> orderItems = new HashSet<>();

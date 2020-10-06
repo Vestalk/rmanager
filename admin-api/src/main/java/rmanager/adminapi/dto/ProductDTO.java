@@ -16,6 +16,8 @@ public class ProductDTO {
     private Double cost;
     private Boolean isAvailable;
     private ImgDTO img;
-    private ProductCategoryDTO category;
+
+    private Integer categoryId;
+    private String categoryName;
 
 }
