@@ -2,6 +2,6 @@ package rmanager.commons.entity.other;
 
 public enum OrderStatus {
 
-    CREATED, INPROGRESS, REJECTED, ACCEPTED
+    CREATION, CREATED, REJECTED, ACCEPTED
 
 }

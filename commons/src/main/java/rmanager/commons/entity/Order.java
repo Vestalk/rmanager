@@ -28,7 +28,7 @@ public class Order {
     private TelegramUser user;
 
     @Column(name = "user_id", updatable = false, nullable = false, insertable = false)
-    private int userId;
+    private Integer userId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status", nullable = false)

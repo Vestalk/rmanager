@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ProductCategoryService} from "../../service/product-category.service";
 import {StringInputComponent} from "../pop-ups/string-input/string-input.component";
@@ -7,13 +7,17 @@ import {ProductCategory} from "../../model/ProductCategory";
 import {CreateEditProductComponent} from "../pop-ups/create-edit-product/create-edit-product.component";
 import {Product} from "../../model/Product";
 import {ProductService} from "../../service/product.service";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-product-menu',
   templateUrl: './product-menu.component.html',
   styleUrls: ['./product-menu.component.css']
 })
-export class ProductMenuComponent implements OnInit {
+export class ProductMenuComponent implements OnInit, AfterViewInit {
+
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  pageSizeOptions = [10, 20, 50];
 
   selectCategoryId: number = null;
   productCategoryList: ProductCategory[] = [];
@@ -29,6 +33,12 @@ export class ProductMenuComponent implements OnInit {
   ngOnInit() {
     this.uploadProductCategoryList();
     this.uploadProductList(null, null, 0, this.length);
+  }
+
+  ngAfterViewInit(): void {
+    this.paginator.page.subscribe(() => {
+      this.uploadProductList(null, this.selectCategoryId, this.paginator.pageIndex, this.paginator.pageSize);
+    });
   }
 
   createNewProductCategory() {
@@ -63,7 +73,7 @@ export class ProductMenuComponent implements OnInit {
         this.snackBar.open('Добавлено!', 'OK', {
           duration: 2000,
         });
-        this.uploadProductList(null, this.selectCategoryId, 0, this.length);
+        this.uploadProductList(null, this.selectCategoryId, this.paginator.pageIndex, this.paginator.pageSize);
       }, err => {
         this.snackBar.open('Что то пошло не так!', 'OK', {
           duration: 2000,
@@ -78,7 +88,7 @@ export class ProductMenuComponent implements OnInit {
         this.snackBar.open('Сохранено!', 'OK', {
           duration: 2000,
         });
-        this.uploadProductList(null, this.selectCategoryId, 0, this.length);
+        this.uploadProductList(null, this.selectCategoryId, this.paginator.pageIndex, this.paginator.pageSize);
       }, err => {
         this.snackBar.open('Что то пошло не так!', 'OK', {
           duration: 2000,
@@ -92,7 +102,7 @@ export class ProductMenuComponent implements OnInit {
       this.snackBar.open('Удалено!', 'OK', {
         duration: 2000,
       });
-      this.uploadProductList(null, this.selectCategoryId, 0, this.length);
+      this.uploadProductList(null, this.selectCategoryId, this.paginator.pageIndex, this.paginator.pageSize);
     })
   }
 
@@ -111,7 +121,7 @@ export class ProductMenuComponent implements OnInit {
     } else {
       this.selectCategoryId = categoryId;
     }
-    this.uploadProductList(null, this.selectCategoryId, 0, this.length);
+    this.uploadProductList(null, this.selectCategoryId, this.paginator.pageIndex, this.paginator.pageSize);
   }
 
 }
