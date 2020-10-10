@@ -44,10 +44,10 @@ public class Order {
     private Double cost;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_pethod", nullable = false)
+    @Column(name = "payment_pethod")
     private PaymentMethod paymentMethod;
 
-    @OneToMany(mappedBy="order")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="order", cascade = CascadeType.ALL)
     private Set<OrderItem> orderItems = new HashSet<>();
 
 }

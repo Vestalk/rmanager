@@ -7,7 +7,6 @@ public interface WaiterConst {
     String SHOW_CART = "Показать корзину";
 
     String MAIN_MENU = "Главное меню";
-    String CATEGORY_MENU = "";
     String CHOSE_CATEGORY = "Выбрать категорию";
     String CART = "Корзина";
 }

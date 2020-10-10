@@ -9,4 +9,6 @@ public interface OrderService {
 
     List<Order> getOrders(Long userId, OrderStatus orderStatus);
 
+    Order save(Order order);
+
 }
