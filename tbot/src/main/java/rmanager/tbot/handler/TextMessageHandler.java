@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import rmanager.commons.entity.Order;
+import rmanager.commons.entity.OrderItem;
 import rmanager.commons.entity.ProductCategory;
 import rmanager.commons.entity.TelegramUser;
+import rmanager.commons.entity.other.OrderStatus;
 import rmanager.commons.entity.other.UserMenuStatus;
+import rmanager.commons.service.OrderService;
 import rmanager.commons.service.ProductCategoryService;
 import rmanager.commons.service.TelegramUserService;
 import rmanager.tbot.MessageFactory;
@@ -22,12 +26,14 @@ import java.util.Map;
 @Component
 public class TextMessageHandler {
 
+    private OrderService orderService;
     private MessageFactory messageFactory;
     private TelegramUserService telegramUserService;
     private ProductCategoryService productCategoryService;
 
     @Autowired
-    public TextMessageHandler(MessageFactory messageFactory, TelegramUserService telegramUserService, ProductCategoryService productCategoryService) {
+    public TextMessageHandler(OrderService orderService, MessageFactory messageFactory, TelegramUserService telegramUserService, ProductCategoryService productCategoryService) {
+        this.orderService = orderService;
         this.messageFactory = messageFactory;
         this.telegramUserService = telegramUserService;
         this.productCategoryService = productCategoryService;
@@ -43,7 +49,7 @@ public class TextMessageHandler {
             keyboardMarkup = messageFactory.getKeyboard(MenuBar.CREATE_ORDER_MENU, false);
         } else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.ORDER)) {
             SendMessage choseCategoryMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), "-");
-            List<ProductCategory> categoryList = productCategoryService.getAll();
+            List<ProductCategory> categoryList = productCategoryService.getAllAvailable();
             Map<String, String> map = new HashMap<>();
             for (ProductCategory category : categoryList) {
                 map.put(category.getName(), CallbackQueryConst.CATEGORY_ID + category.getProductCategoryId());
@@ -53,10 +59,41 @@ public class TextMessageHandler {
 
             responseText = WaiterConst.CHOSE_CATEGORY;
             keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
-        } else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART)) {
-            //TODO
-            responseText = WaiterConst.CART;
-            keyboardMarkup = messageFactory.getPreviousButton();
+        }
+        else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART) && text.equals(WaiterConst.SAVE_ORDER)) {
+            Order order;
+            List<Order> orderList = orderService.getOrders(telegramUser.getUserId(), OrderStatus.CREATING);
+            if (orderList.isEmpty()) {
+                responseText = WaiterConst.CARD_EMPTY;
+                keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
+            } else {
+                order = orderList.get(0);
+                order.setOrderStatus(OrderStatus.CREATED);
+                orderService.save(order);
+
+                telegramUser.setUserMenuStatus(UserMenuStatus.START);
+                telegramUserService.save(telegramUser);
+
+                SendMessage orderCreated = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), "Оформлено");
+                sendMessageList.add(orderCreated);
+
+                responseText = WaiterConst.MAIN_MENU;
+                keyboardMarkup = messageFactory.getKeyboard(MenuBar.CREATE_ORDER_MENU, false);
+            }
+        }
+        else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART)) {
+            Order order;
+            List<Order> orderList = orderService.getOrders(telegramUser.getUserId(), OrderStatus.CREATING);
+            if (orderList.isEmpty()) {
+                responseText = WaiterConst.CARD_EMPTY;
+                keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
+            } else {
+                order = orderList.get(0);
+                for (OrderItem orderItem :order.getOrderItems()){
+                    responseText = responseText + orderItem.getProduct().getName() + " X " + orderItem.getNumber() + "\n";
+                }
+                keyboardMarkup = messageFactory.getKeyboard(MenuBar.CARD_MENU, true);
+            }
         } else {
             responseText = "Test";
             keyboardMarkup = messageFactory.getKeyboard(MenuBar.CREATE_ORDER_MENU, false);
@@ -77,6 +114,8 @@ public class TextMessageHandler {
             if (ordinal > 0) {
                 telegramUser.setUserMenuStatus(UserMenuStatus.values()[ordinal - 1]);
             }
+        } else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART) && text.equals(WaiterConst.SAVE_ORDER)) {
+            return telegramUser;
         } else {
             telegramUser.setUserMenuStatus(UserMenuStatus.START);
         }

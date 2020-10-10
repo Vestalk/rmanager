@@ -35,6 +35,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
+    public List<ProductCategory> getAllAvailable() {
+        return productCategoryRepository.getAllAvailable();
+    }
+
+    @Override
     @Transactional
     public ProductCategory save(ProductCategory category) {
         return productCategoryRepository.saveAndFlush(category);

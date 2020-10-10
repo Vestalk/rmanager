@@ -10,6 +10,7 @@ public interface ProductCategoryService {
     ProductCategory getByName(String name);
 
     List<ProductCategory> getAll();
+    List<ProductCategory> getAllAvailable();
 
     ProductCategory save(ProductCategory category);
     void delete(ProductCategory category);
