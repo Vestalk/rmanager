@@ -25,8 +25,14 @@ public class OrderItem {
     @JoinColumn(name="product_id")
     private Product product;
 
+    @Column(name = "product_id", updatable = false, insertable = false)
+    private Integer productId;
+
     @ManyToOne
     @JoinColumn(name="order_id")
     private Order order;
+
+    @Column(name = "order_id", updatable = false, insertable = false)
+    private Long orderId;
 
 }

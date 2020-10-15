@@ -77,9 +77,15 @@ public class TextMessageHandler {
                 keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
             } else {
                 order = orderList.get(0);
-                //TODO
-                responseText = "Test";
-                keyboardMarkup = messageFactory.getKeyboard(MenuBar.CREATE_ORDER_MENU, false);
+                for (OrderItem item: order.getOrderItems()) {
+                    Map<String, String> map = new HashMap<>();
+                    String messageText = item.getProduct().getName() + " X " + item.getNumber();
+                    SendMessage deleteItemMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), messageText);
+                    map.put("Удалить", commandService.getJsonCommand(CommandType.D_ITEM, EntityType.IT_ID, item.getItemId().toString()));
+                    deleteItemMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
+                    sendMessageList.add(deleteItemMessage);
+                }
+                return sendMessageList;
             }
         }
         else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART) && text.equals(WaiterConst.SAVE_ORDER)) {

@@ -58,7 +58,7 @@ public class CallbackQueryHandler {
 
         String responseText = "-";
         ReplyKeyboardMarkup keyboardMarkup = null;
-        if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.ORDER) && command.getCt().equals(CommandType.C_CAT)) {
+        if (command.getCt().equals(CommandType.C_CAT)) {
             Integer categoryId = Integer.parseInt(command.getCf());
 
             ProductFilter productFilter = new ProductFilter();
@@ -74,12 +74,17 @@ public class CallbackQueryHandler {
 
             keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
         }
-        else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.ORDER) && command.getCt().equals(CommandType.O_PROD)) {
+        else if (command.getCt().equals(CommandType.O_PROD)) {
             Integer productId = Integer.parseInt(command.getCf());
             Product product = productService.getById(productId);
             if (product != null) {
                 createOrderItem(telegramUser, product);
             }
+            return new ArrayList<>();
+        }
+        else if (command.getCt().equals(CommandType.D_ITEM)) {
+            OrderItem orderItem = orderItemService.getById(Long.parseLong(command.getCf()));
+            if (orderItem != null) orderItemService.delete(orderItem);
             return new ArrayList<>();
         }
 
