@@ -17,6 +17,7 @@ import rmanager.commons.service.TelegramUserService;
 import rmanager.tbot.MessageFactory;
 import rmanager.tbot.entity.CommandType;
 import rmanager.tbot.entity.EntityType;
+import rmanager.tbot.other.EmojiConst;
 import rmanager.tbot.other.MenuBar;
 import rmanager.tbot.other.WaiterConst;
 import rmanager.tbot.service.CommandService;
@@ -57,7 +58,7 @@ public class TextMessageHandler {
             responseText = WaiterConst.MAIN_MENU;
             keyboardMarkup = messageFactory.getKeyboard(MenuBar.CREATE_ORDER_MENU, false);
         } else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.ORDER)) {
-            SendMessage choseCategoryMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), "-");
+            SendMessage choseCategoryMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), WaiterConst.CHOSE_CATEGORY);
             List<ProductCategory> categoryList = productCategoryService.getAllAvailable();
             Map<String, String> map = new HashMap<>();
             for (ProductCategory category : categoryList) {
@@ -66,7 +67,7 @@ public class TextMessageHandler {
             choseCategoryMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
             sendMessageList.add(choseCategoryMessage);
 
-            responseText = WaiterConst.CHOSE_CATEGORY;
+            responseText = EmojiConst.DROOLING_FACE;
             keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
         }
         else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART) && text.equals(WaiterConst.EDIT)) {
@@ -78,10 +79,14 @@ public class TextMessageHandler {
             } else {
                 order = orderList.get(0);
                 for (OrderItem item: order.getOrderItems()) {
-                    Map<String, String> map = new HashMap<>();
                     String messageText = item.getProduct().getName() + " X " + item.getNumber();
                     SendMessage deleteItemMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), messageText);
-                    map.put("Удалить", commandService.getJsonCommand(CommandType.D_ITEM, EntityType.IT_ID, item.getItemId().toString()));
+
+                    Map<String, String> map = new HashMap<>();
+                    map.put(EmojiConst.WASTEBASKET, commandService.getJsonCommand(CommandType.D_ITEM, EntityType.IT_ID, item.getItemId().toString()));
+                    map.put(EmojiConst.PLUS, commandService.getJsonCommand(CommandType.P_ITEM, EntityType.IT_ID, item.getItemId().toString()));
+                    map.put(EmojiConst.MINUS, commandService.getJsonCommand(CommandType.M_ITEM, EntityType.IT_ID, item.getItemId().toString()));
+
                     deleteItemMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
                     sendMessageList.add(deleteItemMessage);
                 }
@@ -102,8 +107,9 @@ public class TextMessageHandler {
                 telegramUser.setUserMenuStatus(UserMenuStatus.START);
                 telegramUserService.save(telegramUser);
 
-                SendMessage orderCreated = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), "Оформлено");
-                sendMessageList.add(orderCreated);
+                String orderCreatedResponseText = WaiterConst.ORDER_CREATED + EmojiConst.DROOLING_FACE;
+                SendMessage orderCreatedResponseMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), orderCreatedResponseText);
+                sendMessageList.add(orderCreatedResponseMessage);
 
                 responseText = WaiterConst.MAIN_MENU;
                 keyboardMarkup = messageFactory.getKeyboard(MenuBar.CREATE_ORDER_MENU, false);
@@ -112,11 +118,12 @@ public class TextMessageHandler {
         else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART)) {
             Order order;
             List<Order> orderList = orderService.getOrders(telegramUser.getUserId(), OrderStatus.CREATING);
-            if (orderList.isEmpty()) {
+            if (orderList.isEmpty() || orderList.get(0).getOrderItems().isEmpty()) {
                 responseText = WaiterConst.CARD_EMPTY;
                 keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
             } else {
                 order = orderList.get(0);
+                responseText = EmojiConst.CARD + "\n";
                 for (OrderItem orderItem :order.getOrderItems()){
                     responseText = responseText + orderItem.getProduct().getName() + " X " + orderItem.getNumber() + "\n";
                 }

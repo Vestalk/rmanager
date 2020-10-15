@@ -7,7 +7,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
     compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    implementation ('com.vdurmont:emoji-java:3.2.0')
     
 }

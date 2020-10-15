@@ -1,9 +1,7 @@
 package rmanager.commons.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import rmanager.commons.entity.OrderItem;
 import rmanager.commons.repository.OrderItemRepository;
 import rmanager.commons.service.OrderItemService;
