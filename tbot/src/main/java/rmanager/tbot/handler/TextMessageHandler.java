@@ -1,5 +1,6 @@
 package rmanager.tbot.handler;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,9 +15,11 @@ import rmanager.commons.service.OrderService;
 import rmanager.commons.service.ProductCategoryService;
 import rmanager.commons.service.TelegramUserService;
 import rmanager.tbot.MessageFactory;
-import rmanager.tbot.other.CallbackQueryConst;
+import rmanager.tbot.entity.CommandType;
+import rmanager.tbot.entity.EntityType;
 import rmanager.tbot.other.MenuBar;
 import rmanager.tbot.other.WaiterConst;
+import rmanager.tbot.service.CommandService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,13 +31,19 @@ public class TextMessageHandler {
 
     private OrderService orderService;
     private MessageFactory messageFactory;
+    private CommandService commandService;
     private TelegramUserService telegramUserService;
     private ProductCategoryService productCategoryService;
 
     @Autowired
-    public TextMessageHandler(OrderService orderService, MessageFactory messageFactory, TelegramUserService telegramUserService, ProductCategoryService productCategoryService) {
+    public TextMessageHandler(OrderService orderService,
+                              MessageFactory messageFactory,
+                              CommandService commandService,
+                              TelegramUserService telegramUserService,
+                              ProductCategoryService productCategoryService) {
         this.orderService = orderService;
         this.messageFactory = messageFactory;
+        this.commandService = commandService;
         this.telegramUserService = telegramUserService;
         this.productCategoryService = productCategoryService;
     }
@@ -52,13 +61,26 @@ public class TextMessageHandler {
             List<ProductCategory> categoryList = productCategoryService.getAllAvailable();
             Map<String, String> map = new HashMap<>();
             for (ProductCategory category : categoryList) {
-                map.put(category.getName(), CallbackQueryConst.CATEGORY_ID + category.getProductCategoryId());
+                map.put(category.getName(), commandService.getJsonCommand(CommandType.C_CAT, EntityType.CAT_ID, category.getProductCategoryId().toString()));
             }
             choseCategoryMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
             sendMessageList.add(choseCategoryMessage);
 
             responseText = WaiterConst.CHOSE_CATEGORY;
             keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
+        }
+        else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART) && text.equals(WaiterConst.EDIT)) {
+            Order order;
+            List<Order> orderList = orderService.getOrders(telegramUser.getUserId(), OrderStatus.CREATING);
+            if (orderList.isEmpty()) {
+                responseText = WaiterConst.CARD_EMPTY;
+                keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
+            } else {
+                order = orderList.get(0);
+                //TODO
+                responseText = "Test";
+                keyboardMarkup = messageFactory.getKeyboard(MenuBar.CREATE_ORDER_MENU, false);
+            }
         }
         else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART) && text.equals(WaiterConst.SAVE_ORDER)) {
             Order order;
@@ -115,6 +137,8 @@ public class TextMessageHandler {
                 telegramUser.setUserMenuStatus(UserMenuStatus.values()[ordinal - 1]);
             }
         } else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART) && text.equals(WaiterConst.SAVE_ORDER)) {
+            return telegramUser;
+        } else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART) && text.equals(WaiterConst.EDIT)) {
             return telegramUser;
         } else {
             telegramUser.setUserMenuStatus(UserMenuStatus.START);

@@ -1,5 +1,6 @@
 package rmanager.tbot.handler;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,10 +17,12 @@ import rmanager.commons.repository.filter.ProductFilter;
 import rmanager.commons.service.OrderItemService;
 import rmanager.commons.service.OrderService;
 import rmanager.commons.service.ProductService;
-import rmanager.commons.service.TelegramUserService;
 import rmanager.tbot.MessageFactory;
-import rmanager.tbot.other.CallbackQueryConst;
+import rmanager.tbot.entity.Command;
+import rmanager.tbot.entity.CommandType;
+import rmanager.tbot.entity.EntityType;
 import rmanager.tbot.other.MenuBar;
+import rmanager.tbot.service.CommandService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,16 +33,19 @@ public class CallbackQueryHandler {
     private OrderService orderService;
     private MessageFactory messageFactory;
     private ProductService productService;
+    private CommandService commandService;
     private OrderItemService orderItemService;
 
     @Autowired
     public CallbackQueryHandler(OrderService orderService,
-                          MessageFactory messageFactory,
-                          ProductService productService,
-                          OrderItemService orderItemService) {
+                                MessageFactory messageFactory,
+                                ProductService productService,
+                                CommandService commandService,
+                                OrderItemService orderItemService) {
         this.orderService = orderService;
         this.messageFactory = messageFactory;
         this.productService = productService;
+        this.commandService = commandService;
         this.orderItemService = orderItemService;
     }
 
@@ -47,30 +53,31 @@ public class CallbackQueryHandler {
         List<SendMessage> sendMessageList = new ArrayList<>();
         Message message = callbackQuery.getMessage();
         Long chatId = message.getChatId();
-        String callbackData = callbackQuery.getData();
+
+        Command command = commandService.getCommandFromJson(callbackQuery.getData());
 
         String responseText = "-";
         ReplyKeyboardMarkup keyboardMarkup = null;
-        if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.ORDER) && callbackData.contains(CallbackQueryConst.CATEGORY_ID)) {
-            Integer categoryId = Integer.parseInt(callbackData.replace(CallbackQueryConst.CATEGORY_ID, ""));
+        if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.ORDER) && command.getCt().equals(CommandType.C_CAT)) {
+            Integer categoryId = Integer.parseInt(command.getCf());
 
             ProductFilter productFilter = new ProductFilter();
             productFilter.setProductCategoryId(categoryId);
             List<Product> productList = productService.getByFilter(productFilter);
-            for (Product product: productList) {
+            for (Product product : productList) {
                 SendMessage productMessage = messageFactory.createMessage(chatId, product.getName());
                 Map<String, String> map = new HashMap<>();
-                map.put("Заказать", CallbackQueryConst.PRODUCT_ID + product.getProductId());
+                map.put("Заказать", commandService.getJsonCommand(CommandType.O_PROD, EntityType.PROD_ID, product.getProductId().toString()));
                 productMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
                 sendMessageList.add(productMessage);
             }
 
             keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
         }
-        else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.ORDER) && callbackData.contains(CallbackQueryConst.PRODUCT_ID)) {
-            Integer productId = Integer.parseInt(callbackData.replace(CallbackQueryConst.PRODUCT_ID, ""));
+        else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.ORDER) && command.getCt().equals(CommandType.O_PROD)) {
+            Integer productId = Integer.parseInt(command.getCf());
             Product product = productService.getById(productId);
-            if (product != null){
+            if (product != null) {
                 createOrderItem(telegramUser, product);
             }
             return new ArrayList<>();
