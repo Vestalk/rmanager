@@ -5,8 +5,8 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rmanager.tbot.entity.Command;
-import rmanager.tbot.entity.CommandType;
-import rmanager.tbot.entity.EntityType;
+import rmanager.tbot.entity.other.CommandType;
+import rmanager.tbot.entity.other.EntityType;
 
 @Service
 public class CommandServiceImpl implements CommandService {

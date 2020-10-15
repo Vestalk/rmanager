@@ -6,6 +6,7 @@ public interface WaiterConst {
     String CREATE_ORDER = "Создать заказать";
     String SAVE_ORDER = "Оформить заказ";
     String ORDER = "Заказать";
+    String SHOW = "Показать";
 
     String PREVIOUS = "Назад";
     String SHOW_CART = "Показать корзину";

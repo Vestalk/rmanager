@@ -1,8 +1,8 @@
 package rmanager.tbot.service;
 
 import rmanager.tbot.entity.Command;
-import rmanager.tbot.entity.CommandType;
-import rmanager.tbot.entity.EntityType;
+import rmanager.tbot.entity.other.CommandType;
+import rmanager.tbot.entity.other.EntityType;
 
 public interface CommandService {
 

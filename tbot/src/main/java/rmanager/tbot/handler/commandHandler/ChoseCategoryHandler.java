@@ -9,15 +9,13 @@ import rmanager.commons.repository.filter.ProductFilter;
 import rmanager.commons.service.ProductService;
 import rmanager.tbot.MessageFactory;
 import rmanager.tbot.entity.Command;
-import rmanager.tbot.entity.CommandType;
-import rmanager.tbot.entity.EntityType;
+import rmanager.tbot.entity.ResponseMessageGroup;
+import rmanager.tbot.entity.other.CommandType;
+import rmanager.tbot.entity.other.EntityType;
 import rmanager.tbot.other.WaiterConst;
 import rmanager.tbot.service.CommandService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class ChoseCategoryHandler implements CommandHandler{
@@ -36,7 +34,7 @@ public class ChoseCategoryHandler implements CommandHandler{
     }
 
     @Override
-    public List<SendMessage> handle(Command command, TelegramUser telegramUser) {
+    public List<ResponseMessageGroup> handle(Command command, TelegramUser telegramUser) {
         List<SendMessage> sendMessageList = new ArrayList<>();
 
         Integer categoryId = Integer.parseInt(command.getCf());
@@ -47,10 +45,11 @@ public class ChoseCategoryHandler implements CommandHandler{
             SendMessage productMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), product.getName());
             Map<String, String> map = new HashMap<>();
             map.put(WaiterConst.ORDER, commandService.getJsonCommand(CommandType.O_PROD, EntityType.PROD_ID, product.getProductId().toString()));
+            map.put(WaiterConst.SHOW, commandService.getJsonCommand(CommandType.S_PROD, EntityType.PROD_ID, product.getProductId().toString()));
             productMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
             sendMessageList.add(productMessage);
         }
-        return sendMessageList;
+        return Arrays.asList(ResponseMessageGroup.builder().sendMessageList(sendMessageList).build());
     }
 
 }

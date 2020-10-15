@@ -13,6 +13,7 @@ import rmanager.commons.service.OrderService;
 import rmanager.commons.service.ProductService;
 import rmanager.tbot.MessageFactory;
 import rmanager.tbot.entity.Command;
+import rmanager.tbot.entity.ResponseMessageGroup;
 import rmanager.tbot.service.CommandService;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class OrderProductHandler implements CommandHandler{
     }
 
     @Override
-    public List<SendMessage> handle(Command command, TelegramUser telegramUser) {
+    public List<ResponseMessageGroup> handle(Command command, TelegramUser telegramUser) {
         Integer productId = Integer.parseInt(command.getCf());
         Product product = productService.getById(productId);
         if (product != null) {

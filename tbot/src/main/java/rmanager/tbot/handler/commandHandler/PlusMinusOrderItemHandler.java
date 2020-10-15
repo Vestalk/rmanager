@@ -8,8 +8,9 @@ import rmanager.commons.entity.TelegramUser;
 import rmanager.commons.service.OrderItemService;
 import rmanager.tbot.MessageFactory;
 import rmanager.tbot.entity.Command;
-import rmanager.tbot.entity.CommandType;
-import rmanager.tbot.entity.EntityType;
+import rmanager.tbot.entity.ResponseMessageGroup;
+import rmanager.tbot.entity.other.CommandType;
+import rmanager.tbot.entity.other.EntityType;
 import rmanager.tbot.other.EmojiConst;
 import rmanager.tbot.service.CommandService;
 
@@ -30,7 +31,7 @@ public class PlusMinusOrderItemHandler implements CommandHandler{
     }
 
     @Override
-    public List<SendMessage> handle(Command command, TelegramUser telegramUser) {
+    public List<ResponseMessageGroup> handle(Command command, TelegramUser telegramUser) {
         OrderItem orderItem = orderItemService.getById(Long.parseLong(command.getCf()));
         if (orderItem == null) return new ArrayList<>();
 
@@ -60,6 +61,6 @@ public class PlusMinusOrderItemHandler implements CommandHandler{
         map.put(EmojiConst.MINUS, commandService.getJsonCommand(CommandType.M_ITEM, EntityType.IT_ID, orderItem.getItemId().toString()));
 
         deleteItemMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
-        return Arrays.asList(deleteItemMessage);
+        return Arrays.asList(ResponseMessageGroup.builder().sendMessageList(Arrays.asList(deleteItemMessage)).build());
     }
 }

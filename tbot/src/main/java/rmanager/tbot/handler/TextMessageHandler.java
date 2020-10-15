@@ -1,6 +1,5 @@
 package rmanager.tbot.handler;
 
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,17 +14,15 @@ import rmanager.commons.service.OrderService;
 import rmanager.commons.service.ProductCategoryService;
 import rmanager.commons.service.TelegramUserService;
 import rmanager.tbot.MessageFactory;
-import rmanager.tbot.entity.CommandType;
-import rmanager.tbot.entity.EntityType;
+import rmanager.tbot.entity.ResponseMessageGroup;
+import rmanager.tbot.entity.other.CommandType;
+import rmanager.tbot.entity.other.EntityType;
 import rmanager.tbot.other.EmojiConst;
 import rmanager.tbot.other.MenuBar;
 import rmanager.tbot.other.WaiterConst;
 import rmanager.tbot.service.CommandService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class TextMessageHandler {
@@ -49,7 +46,7 @@ public class TextMessageHandler {
         this.productCategoryService = productCategoryService;
     }
 
-    public List<SendMessage> handleMessage(TelegramUser telegramUser, String text) {
+    public List<ResponseMessageGroup> handleMessage(TelegramUser telegramUser, String text) {
         List<SendMessage> sendMessageList = new ArrayList<>();
         ReplyKeyboardMarkup keyboardMarkup;
         String responseText = "";
@@ -90,7 +87,8 @@ public class TextMessageHandler {
                     deleteItemMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
                     sendMessageList.add(deleteItemMessage);
                 }
-                return sendMessageList;
+                ResponseMessageGroup messageGroup = ResponseMessageGroup.builder().sendMessageList(sendMessageList).build();
+                return Arrays.asList(messageGroup);
             }
         }
         else if (telegramUser.getUserMenuStatus().equals(UserMenuStatus.CART) && text.equals(WaiterConst.SAVE_ORDER)) {
@@ -136,7 +134,9 @@ public class TextMessageHandler {
         SendMessage sendMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), responseText);
         sendMessage.setReplyMarkup(keyboardMarkup);
         sendMessageList.add(sendMessage);
-        return sendMessageList;
+
+        ResponseMessageGroup messageGroup = ResponseMessageGroup.builder().sendMessageList(sendMessageList).build();
+        return Arrays.asList(messageGroup);
     }
 
     private TelegramUser changeUserMenuStatus(TelegramUser telegramUser, String text) {

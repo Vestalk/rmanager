@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import rmanager.commons.entity.*;
 import rmanager.commons.entity.other.UserMenuStatus;
 import rmanager.commons.service.*;
+import rmanager.tbot.entity.ResponseMessageGroup;
 import rmanager.tbot.handler.CallbackQueryHandler;
 import rmanager.tbot.handler.TextMessageHandler;
 
@@ -31,7 +32,7 @@ public class MessageHandler {
         this.telegramUserService = telegramUserService;
     }
 
-    public List<SendMessage> handleMessage(Update update) {
+    public List<ResponseMessageGroup> handleMessage(Update update) {
         if (update.hasMessage()) {
             Message message = update.getMessage();
             Chat chat = message.getChat();

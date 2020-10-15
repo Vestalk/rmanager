@@ -1,6 +1,8 @@
 package rmanager.tbot.entity;
 
 import lombok.*;
+import rmanager.tbot.entity.other.CommandType;
+import rmanager.tbot.entity.other.EntityType;
 
 @Setter
 @Getter

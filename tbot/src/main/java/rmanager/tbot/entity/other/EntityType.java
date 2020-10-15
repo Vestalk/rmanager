@@ -1,4 +1,4 @@
-package rmanager.tbot.entity;
+package rmanager.tbot.entity.other;
 
 public enum  EntityType {
 
