@@ -98,7 +98,13 @@
   align-items: flex-start;
   justify-content: space-between;
 
-  width: 100%;
+  width: 250px;
+}
+
+.product_info span {
+  text-overflow: ellipsis;
+  max-width: 250px;
+  overflow: hidden;
 }
 
 .item_buttons {

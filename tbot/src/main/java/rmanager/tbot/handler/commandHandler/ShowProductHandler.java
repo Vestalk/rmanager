@@ -59,10 +59,10 @@ public class ShowProductHandler implements CommandHandler{
     }
 
     private List<SendMessage> createProductMessage(TelegramUser telegramUser, Product product) {
-        SendMessage productMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), product.getName());
+        String productDescriptionMessage = product.getName() + " (" + product.getCost() + " грн)" + "\n" + product.getDescription();
+        SendMessage productMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), productDescriptionMessage);
         Map<String, String> map = new HashMap<>();
         map.put(WaiterConst.ORDER, commandService.getJsonCommand(CommandType.O_PROD, EntityType.PROD_ID, product.getProductId().toString()));
-        map.put(WaiterConst.SHOW, commandService.getJsonCommand(CommandType.S_PROD, EntityType.PROD_ID, product.getProductId().toString()));
         productMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
         return Arrays.asList(productMessage);
     }
