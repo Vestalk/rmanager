@@ -32,6 +32,7 @@ import {UsersComponent} from './components/users/users.component';
 import {ProductMenuComponent} from './components/product-menu/product-menu.component';
 import {StringInputComponent} from './components/pop-ups/string-input/string-input.component';
 import {CreateEditProductComponent} from './components/pop-ups/create-edit-product/create-edit-product.component';
+import {OrderMenuComponent} from './components/order-menu/order-menu.component';
 
 const routes: Routes = [
   {path: "login", component: LoginComponent},
@@ -39,6 +40,7 @@ const routes: Routes = [
     path: 'content-container', component: ContainerComponent, children: [
       {path: 'users', component: UsersComponent},
       {path: 'product-menu', component: ProductMenuComponent},
+      {path: 'order-menu', component: OrderMenuComponent},
     ]
   },
   {path: '', redirectTo: '/login', pathMatch: 'full'}
@@ -52,7 +54,8 @@ const routes: Routes = [
     UsersComponent,
     ProductMenuComponent,
     StringInputComponent,
-    CreateEditProductComponent
+    CreateEditProductComponent,
+    OrderMenuComponent
   ],
   imports: [
     MatDialogModule,

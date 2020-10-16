@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface OrderService {
 
+    List<Order> getOrders(OrderStatus orderStatus);
+    List<Order> getOrders(List<OrderStatus> orderStatus);
     List<Order> getOrders(Long userId, OrderStatus orderStatus);
 
     Order save(Order order);

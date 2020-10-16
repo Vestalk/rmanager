@@ -99,7 +99,8 @@ public class TextMessageHandler {
                 keyboardMarkup = messageFactory.getKeyboard(MenuBar.SHOW_CARD_MENU, true);
             } else {
                 order = orderList.get(0);
-                order.setOrderStatus(OrderStatus.CREATED);
+                order.setOrderStatus(OrderStatus.IN_PROGRESS);
+                order.setDateCreate(new Date());
                 orderService.save(order);
 
                 telegramUser.setUserMenuStatus(UserMenuStatus.START);

@@ -35,13 +35,10 @@ public class Order {
     private OrderStatus orderStatus;
 
     @Column(name = "date_created")
-    private Date dateCreated;
+    private Date dateCreate;
 
-    @Column(name = "execution_date")
-    private Date executionDate;
-
-    @Column(name = "cost")
-    private Double cost;
+    @Column(name = "date_execute")
+    private Date dateExecute;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_pethod")

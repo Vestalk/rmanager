@@ -8,6 +8,7 @@ import rmanager.commons.repository.OrderRepository;
 import rmanager.commons.service.OrderService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -17,6 +18,16 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
+    }
+
+    @Override
+    public List<Order> getOrders(OrderStatus orderStatus) {
+        return orderRepository.getOrders(orderStatus.name());
+    }
+
+    @Override
+    public List<Order> getOrders(List<OrderStatus> orderStatus) {
+        return orderRepository.getOrders(orderStatus.stream().map(Enum::name).collect(Collectors.toList()));
     }
 
     @Override

@@ -1,14 +1,8 @@
 package rmanager.adminapi.service;
 
 import org.springframework.stereotype.Service;
-import rmanager.adminapi.dto.ImgDTO;
-import rmanager.adminapi.dto.ProductCategoryDTO;
-import rmanager.adminapi.dto.ProductDTO;
-import rmanager.adminapi.dto.UserDTO;
-import rmanager.commons.entity.Img;
-import rmanager.commons.entity.Product;
-import rmanager.commons.entity.ProductCategory;
-import rmanager.commons.entity.User;
+import rmanager.adminapi.dto.*;
+import rmanager.commons.entity.*;
 import rmanager.commons.entity.other.UserRole;
 
 import javax.imageio.ImageIO;
@@ -18,9 +12,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.stream.Collectors;
 
 @Service
-public class ConvertServiceImpl implements ConvertService{
+public class ConvertServiceImpl implements ConvertService {
 
     private static final String IMAGE_PREFIX = "data:image/jpeg;base64,";
     private final String JPG = ".jpg";
@@ -95,18 +90,64 @@ public class ConvertServiceImpl implements ConvertService{
         return IMAGE_PREFIX + encodeToBase64(baos.toByteArray());
     }
 
-    private static String encodeToBase64(byte[] inputByteArray){
+    private static String encodeToBase64(byte[] inputByteArray) {
         return Base64.getEncoder()
                 .withoutPadding()
                 .encodeToString(inputByteArray);
     }
 
-    private static BufferedImage resizeImage(BufferedImage originalImage, int type, Integer width, Integer height){
+    private static BufferedImage resizeImage(BufferedImage originalImage, int type, Integer width, Integer height) {
         BufferedImage resizedImage = new BufferedImage(width, height, type);
         Graphics2D g = resizedImage.createGraphics();
         g.drawImage(originalImage, 0, 0, width, height, null);
         g.dispose();
 
         return resizedImage;
+    }
+
+    @Override
+    public OrderDTO convertOrderToDTO(Order order) {
+        return OrderDTO
+                .builder()
+                .orderId(order.getOrderId())
+                .client(convertTelegramUserToDTO(order.getUser()))
+                .orderStatus(order.getOrderStatus())
+                .dateCreate(order.getDateCreate().getTime())
+                .dateExecute(order.getDateExecute().getTime())
+                .paymentMethod(order.getPaymentMethod())
+                .orderItemList(order.getOrderItems().stream().map(this::convertOrderItemToDTO).collect(Collectors.toList()))
+                .build();
+    }
+
+    @Override
+    public OrderItemDTO convertOrderItemToDTO(OrderItem orderItem) {
+        Product product = orderItem.getProduct();
+        ProductDTO productDTO = ProductDTO.builder()
+                .productId(product.getProductId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .cost(product.getCost())
+                .isAvailable(product.getIsAvailable())
+                .categoryId(product.getCategoryId() != null ? product.getProductCategory().getProductCategoryId() : null)
+                .categoryName(product.getCategoryId() != null ? product.getProductCategory().getName() : null)
+                .build();
+
+        return OrderItemDTO
+                .builder()
+                .itemId(orderItem.getItemId())
+                .number(orderItem.getNumber())
+                .product(productDTO)
+                .build();
+    }
+
+    @Override
+    public TelegramUserDTO convertTelegramUserToDTO(TelegramUser telegramUser) {
+        return TelegramUserDTO
+                .builder()
+                .userId(telegramUser.getUserId())
+                .firstName(telegramUser.getFirstName())
+                .lastName(telegramUser.getLastName())
+                .bonusBalance(telegramUser.getBonusBalance())
+                .build();
     }
 }

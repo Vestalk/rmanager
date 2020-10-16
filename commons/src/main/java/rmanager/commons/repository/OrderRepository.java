@@ -14,6 +14,12 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
+    @Query(value = "select * from orders as o where o.order_status = ?1", nativeQuery = true)
+    List<Order> getOrders(String orderStatus);
+
+    @Query(value = "select * from orders as o where o.order_status in ?1", nativeQuery = true)
+    List<Order> getOrders(List<String> orderStatus);
+
     @Query(value = "select * from orders as o where o.user_id = ?1 and o.order_status = ?2", nativeQuery = true)
     List<Order> getOrders(Long userId, String orderStatus);
 

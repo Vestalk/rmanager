@@ -57,4 +57,8 @@ export class ContainerComponent implements OnInit {
   routeToProductMenu() {
     this.router.navigateByUrl("/content-container/product-menu");
   }
+
+  routeToOrderMenu() {
+    this.router.navigateByUrl("/content-container/order-menu");
+  }
 }

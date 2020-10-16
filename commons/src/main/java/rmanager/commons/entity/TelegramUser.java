@@ -24,7 +24,7 @@ public class TelegramUser {
     private String firstName;
 
     @Column(name = "last_name")
-    private String lastLame;
+    private String lastName;
 
     @Column(name = "user_name")
     private String userName;
