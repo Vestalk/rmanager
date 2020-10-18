@@ -58,7 +58,7 @@ public class MessageHandler {
     private TelegramUser saveNewUser(Chat chat) {
         TelegramUser telegramUser = new TelegramUser();
         telegramUser.setFirstName(chat.getFirstName());
-        telegramUser.setLastLame(chat.getLastName());
+        telegramUser.setLastName(chat.getLastName());
         telegramUser.setUserName(chat.getUserName());
         telegramUser.setTelegramBotChatId(chat.getId());
         telegramUser.setUserMenuStatus(UserMenuStatus.START);
