@@ -10,7 +10,7 @@
             {{o.client.firstName + ' ' + o.client.lastName + ' ' + o.client.userName}}
         </span>
         <span>
-            {{'Время ожидания: ' + (o.dateCreate ? waitingTimeCookingMap.get(o.orderId) : 'Не проверялось')}}
+            {{'Время ожидания: ' + (waitingTimeCookingMap.get(o.orderId) ? formatTimeWaiting(waitingTimeCookingMap.get(o.orderId)) : '-')}}
         </span>
 
         <div class="order_items">
@@ -37,7 +37,7 @@
             {{o.client.firstName + ' ' + o.client.lastName + ' ' + o.client.userName}}
         </span>
         <span>
-            {{'Время ожидания: ' + (o.dateCreate ? clientWaitingTimeMap.get(o.orderId) : 'Не проверялось')}}
+            {{'Время ожидания: ' + (clientWaitingTimeMap.get(o.orderId) ? formatTimeWaiting(clientWaitingTimeMap.get(o.orderId)) : '-')}}
         </span>
 
         <div class="order_items">

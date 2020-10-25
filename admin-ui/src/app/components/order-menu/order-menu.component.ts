@@ -29,7 +29,6 @@ export class OrderMenuComponent implements OnInit {
               private orderService: OrderService) { }
 
   ngOnInit() {
-    //DOTO fix
     this.messageAudio.src = "https://notificationsounds.com/storage/sounds/file-sounds-1148-juntos.mp3";
     this.messageAudio.load();
 
@@ -37,10 +36,16 @@ export class OrderMenuComponent implements OnInit {
 
     setInterval(() => {
       this.orderList.forEach( o => {
-        if (o.dateCreate) this.waitingTimeCookingMap.set(o.orderId, this.getWaitingTime(o.dateCreate))
+        if (o.dateCreate) {
+          let waitingInSecond = (new Date().getTime() - o.dateCreate) / 1000;
+          this.waitingTimeCookingMap.set(o.orderId, waitingInSecond)
+        }
       });
       this.orderList.forEach( o => {
-        if (o.dateCooking) this.clientWaitingTimeMap.set(o.orderId, this.getWaitingTime(o.dateCooking))
+        if (o.dateCooking) {
+          let waitingInSecond = (new Date().getTime() - o.dateCooking) / 1000;
+          this.clientWaitingTimeMap.set(o.orderId, waitingInSecond)
+        }
       });
     }, 1000);
 
@@ -61,7 +66,6 @@ export class OrderMenuComponent implements OnInit {
     this.dialog.open(RequestConfirmComponent, {data: null}).afterClosed().subscribe(resp => {
       if (resp) {
         this.orderService.changeStatus(orderId, status).subscribe(resp => {
-          //TODO improve performance
           this.loadOrderList();
         })
       }
@@ -81,13 +85,10 @@ export class OrderMenuComponent implements OnInit {
     this.orderListCreated = orderList.filter(o => o.orderStatus === this.CREATED);
   }
 
-  getWaitingTime(date: number): string {
-    let dateInSecond = (new Date().getTime() - date) / 1000;
-
-    let hour = Math.trunc(dateInSecond / 60 / 60);
-    let min = Math.trunc((dateInSecond - (hour * 60 * 60)) / 60);
-    let sec = Math.trunc(dateInSecond - (min * 60) - (hour * 60 * 60));
-
+  formatTimeWaiting(waitingInSecond: number): string {
+    let hour = Math.trunc(waitingInSecond / 60 / 60);
+    let min = Math.trunc((waitingInSecond - (hour * 60 * 60)) / 60);
+    let sec = Math.trunc(waitingInSecond - (min * 60) - (hour * 60 * 60));
     return (hour < 10 ? '0' + hour : hour) + ':' + (min < 10 ? '0' + min : min) + ':' + (sec < 10 ? '0' + sec : sec);
   }
 
