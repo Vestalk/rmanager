@@ -33,6 +33,7 @@ import {ProductMenuComponent} from './components/product-menu/product-menu.compo
 import {StringInputComponent} from './components/pop-ups/string-input/string-input.component';
 import {CreateEditProductComponent} from './components/pop-ups/create-edit-product/create-edit-product.component';
 import {OrderMenuComponent} from './components/order-menu/order-menu.component';
+import { RequestConfirmComponent } from './components/pop-ups/request-confirm/request-confirm.component';
 
 const routes: Routes = [
   {path: "login", component: LoginComponent},
@@ -55,7 +56,8 @@ const routes: Routes = [
     ProductMenuComponent,
     StringInputComponent,
     CreateEditProductComponent,
-    OrderMenuComponent
+    OrderMenuComponent,
+    RequestConfirmComponent
   ],
   imports: [
     MatDialogModule,
@@ -94,7 +96,8 @@ const routes: Routes = [
   ],
   entryComponents: [
     StringInputComponent,
-    CreateEditProductComponent
+    CreateEditProductComponent,
+    RequestConfirmComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -20,6 +20,7 @@ public class OrderDTO {
     private TelegramUserDTO client;
     private OrderStatus orderStatus;
     private Long dateCreate;
+    private Long dateCooking;
     private Long dateExecute;
     private PaymentMethod paymentMethod;
     private List<OrderItemDTO> orderItemList = new ArrayList<>();

@@ -1,1 +1,61 @@
-<p>order-menu works!</p>
+<div class="order_block">
+  <div class="order_menu">
+
+  </div>
+
+  <div class="order_table">
+    <div class="in_progress">
+      <div class="order" *ngFor="let o of orderListInProgress">
+        <span>
+            {{o.client.firstName + ' ' + o.client.lastName + ' ' + o.client.userName}}
+        </span>
+        <span>
+            {{'Время ожидания: ' + (o.dateCreate ? waitingTimeCookingMap.get(o.orderId) : 'Не проверялось')}}
+        </span>
+
+        <div class="order_items">
+          <span>{{'Заказано:'}}</span>
+          <ul *ngFor="let item of o.orderItemList">
+            <li>{{item.product.name + ' x ' + item.number}}</li>
+          </ul>
+        </div>
+
+        <div class="buttons">
+          <button (click)="changeOrderStatus(o.orderId, CREATED)" mat-raised-button color="warn">
+            <span>Готово</span>
+          </button>
+          <button (click)="changeOrderStatus(o.orderId, REJECTED)" mat-raised-button color="warn">
+            <span>Отклонить</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="created">
+      <div class="order" *ngFor="let o of orderListCreated">
+        <span>
+            {{o.client.firstName + ' ' + o.client.lastName + ' ' + o.client.userName}}
+        </span>
+        <span>
+            {{'Время ожидания: ' + (o.dateCreate ? clientWaitingTimeMap.get(o.orderId) : 'Не проверялось')}}
+        </span>
+
+        <div class="order_items">
+          <span>{{'Заказано:'}}</span>
+          <ul *ngFor="let item of o.orderItemList">
+            <li>{{item.product.name + ' x ' + item.number}}</li>
+          </ul>
+        </div>
+
+        <div class="buttons">
+          <button (click)="changeOrderStatus(o.orderId, ACCEPTED)" mat-raised-button color="warn">
+            <span>Готово</span>
+          </button>
+          <button (click)="changeOrderStatus(o.orderId, REJECTED)" mat-raised-button color="warn">
+            <span>Отклонить</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div>
+  <span>{{data ? data : 'Вы уверены?'}}</span>
+  <div>
+    <button (click)="accept()" mat-raised-button>
+      <span>Да</span>
+    </button>
+    <button (click)="reject()" mat-raised-button>
+      <span>Нет</span>
+    </button>
+  </div>
+</div>

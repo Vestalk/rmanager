@@ -37,6 +37,9 @@ public class Order {
     @Column(name = "date_created")
     private Date dateCreate;
 
+    @Column(name = "date_cooking")
+    private Date dateCooking;
+
     @Column(name = "date_execute")
     private Date dateExecute;
 

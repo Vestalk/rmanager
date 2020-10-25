@@ -21,6 +21,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order getById(Long id) {
+        return this.orderRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public List<Order> getOrders(OrderStatus orderStatus) {
         return orderRepository.getOrders(orderStatus.name());
     }

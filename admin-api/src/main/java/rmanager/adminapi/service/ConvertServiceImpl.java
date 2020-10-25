@@ -113,6 +113,7 @@ public class ConvertServiceImpl implements ConvertService {
                 .client(convertTelegramUserToDTO(order.getUser()))
                 .orderStatus(order.getOrderStatus())
                 .dateCreate(order.getDateCreate() != null ? order.getDateCreate().getTime() : null)
+                .dateCooking(order.getDateCooking() != null ? order.getDateCooking().getTime() : null)
                 .dateExecute(order.getDateExecute() != null ? order.getDateExecute().getTime() : null)
                 .paymentMethod(order.getPaymentMethod())
                 .orderItemList(order.getOrderItems().stream().map(this::convertOrderItemToDTO).collect(Collectors.toList()))

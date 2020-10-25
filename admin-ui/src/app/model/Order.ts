@@ -7,6 +7,7 @@ export class Order {
   orderStatus: string;
   dateCreate: number;
   dateExecute: number;
+  dateCooking: number;
   paymentMethod: string;
 
   client: TelegramUser;
