@@ -56,9 +56,9 @@ public class PlusMinusOrderItemHandler implements CommandHandler{
         SendMessage deleteItemMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), messageText);
 
         Map<String, String> map = new HashMap<>();
-        map.put(EmojiConst.WASTEBASKET, commandService.getJsonCommand(CommandType.D_ITEM, EntityType.IT_ID, orderItem.getItemId().toString()));
-        map.put(EmojiConst.PLUS, commandService.getJsonCommand(CommandType.P_ITEM, EntityType.IT_ID, orderItem.getItemId().toString()));
-        map.put(EmojiConst.MINUS, commandService.getJsonCommand(CommandType.M_ITEM, EntityType.IT_ID, orderItem.getItemId().toString()));
+        map.put(EmojiConst.WASTEBASKET, commandService.getCommandAsJson(CommandType.D_ITEM, EntityType.IT_ID, orderItem.getItemId().toString()));
+        map.put(EmojiConst.PLUS, commandService.getCommandAsJson(CommandType.P_ITEM, EntityType.IT_ID, orderItem.getItemId().toString()));
+        map.put(EmojiConst.MINUS, commandService.getCommandAsJson(CommandType.M_ITEM, EntityType.IT_ID, orderItem.getItemId().toString()));
 
         deleteItemMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
         return Arrays.asList(ResponseMessageGroup.builder().sendMessageList(Arrays.asList(deleteItemMessage)).build());

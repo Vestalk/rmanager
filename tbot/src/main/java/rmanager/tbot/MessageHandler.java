@@ -52,7 +52,7 @@ public class MessageHandler {
             }
             return callbackQueryHandler.handleMessage(telegramUser, callbackQuery);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private TelegramUser saveNewUser(Chat chat) {

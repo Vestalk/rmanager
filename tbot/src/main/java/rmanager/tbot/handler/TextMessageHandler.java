@@ -59,7 +59,7 @@ public class TextMessageHandler {
             List<ProductCategory> categoryList = productCategoryService.getAllAvailable();
             Map<String, String> map = new HashMap<>();
             for (ProductCategory category : categoryList) {
-                map.put(category.getName(), commandService.getJsonCommand(CommandType.C_CAT, EntityType.CAT_ID, category.getProductCategoryId().toString()));
+                map.put(category.getName(), commandService.getCommandAsJson(CommandType.C_CAT, EntityType.CAT_ID, category.getProductCategoryId().toString()));
             }
             choseCategoryMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
             sendMessageList.add(choseCategoryMessage);
@@ -80,9 +80,9 @@ public class TextMessageHandler {
                     SendMessage deleteItemMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), messageText);
 
                     Map<String, String> map = new HashMap<>();
-                    map.put(EmojiConst.WASTEBASKET, commandService.getJsonCommand(CommandType.D_ITEM, EntityType.IT_ID, item.getItemId().toString()));
-                    map.put(EmojiConst.PLUS, commandService.getJsonCommand(CommandType.P_ITEM, EntityType.IT_ID, item.getItemId().toString()));
-                    map.put(EmojiConst.MINUS, commandService.getJsonCommand(CommandType.M_ITEM, EntityType.IT_ID, item.getItemId().toString()));
+                    map.put(EmojiConst.WASTEBASKET, commandService.getCommandAsJson(CommandType.D_ITEM, EntityType.IT_ID, item.getItemId().toString()));
+                    map.put(EmojiConst.PLUS, commandService.getCommandAsJson(CommandType.P_ITEM, EntityType.IT_ID, item.getItemId().toString()));
+                    map.put(EmojiConst.MINUS, commandService.getCommandAsJson(CommandType.M_ITEM, EntityType.IT_ID, item.getItemId().toString()));
 
                     deleteItemMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
                     sendMessageList.add(deleteItemMessage);

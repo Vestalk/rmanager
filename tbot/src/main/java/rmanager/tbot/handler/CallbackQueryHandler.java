@@ -43,7 +43,7 @@ public class CallbackQueryHandler {
     }
 
     public List<ResponseMessageGroup> handleMessage(TelegramUser telegramUser, CallbackQuery callbackQuery) {
-        Command command = commandService.getCommandFromJson(callbackQuery.getData());
+        Command command = commandService.convertCommandFromJson(callbackQuery.getData());
         if (command.getCt().equals(CommandType.C_CAT)) {
             return choseCategoryHandler.handle(command, telegramUser);
         }

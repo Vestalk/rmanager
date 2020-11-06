@@ -45,8 +45,8 @@ public class ChoseCategoryHandler implements CommandHandler{
             String productDescriptionMessage = product.getName() + " (" + product.getCost() + " грн)";
             SendMessage productMessage = messageFactory.createMessage(telegramUser.getTelegramBotChatId(), productDescriptionMessage);
             Map<String, String> map = new HashMap<>();
-            map.put(WaiterConst.ORDER, commandService.getJsonCommand(CommandType.O_PROD, EntityType.PROD_ID, product.getProductId().toString()));
-            map.put(WaiterConst.SHOW, commandService.getJsonCommand(CommandType.S_PROD, EntityType.PROD_ID, product.getProductId().toString()));
+            map.put(WaiterConst.ORDER, commandService.getCommandAsJson(CommandType.O_PROD, EntityType.PROD_ID, product.getProductId().toString()));
+            map.put(WaiterConst.SHOW, commandService.getCommandAsJson(CommandType.S_PROD, EntityType.PROD_ID, product.getProductId().toString()));
             productMessage.setReplyMarkup(messageFactory.createInlineKeyboardMarkup(map));
             sendMessageList.add(productMessage);
         }

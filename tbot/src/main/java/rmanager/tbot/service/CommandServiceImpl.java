@@ -19,7 +19,7 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public String getJsonCommand(CommandType commandType, EntityType entityType, String commandField) {
+    public String getCommandAsJson(CommandType commandType, EntityType entityType, String commandField) {
         return gson.toJson(Command.builder()
                 .ct(commandType)
                 .et(entityType)
@@ -28,7 +28,7 @@ public class CommandServiceImpl implements CommandService {
     }
 
     @Override
-    public Command getCommandFromJson(String json) {
+    public Command convertCommandFromJson(String json) {
         return gson.fromJson(json, Command.class);
     }
 }
